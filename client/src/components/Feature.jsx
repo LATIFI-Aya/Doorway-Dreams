@@ -9,7 +9,7 @@ const Feature = () => {
     <section className='max-padd-container py-16 xl:py-32'>
         {/* title */}
         <div className='text-center pb-16'>
-            <h6 className='capitalize'> Feaw Steps to your naw home </h6>
+            <h6 className='capitalize'> Few Steps to your naw home </h6>
             <h2 className='h2 capitalize'>This is how easy it can be </h2>
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12'>
