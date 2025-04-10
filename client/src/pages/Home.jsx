@@ -14,7 +14,7 @@ import About from '../components/About'
         <Feature />
         <Linstings />
         <About />
-        {/*<Footer/>*/}
+        <Footer/>
     </>
   );
 };
