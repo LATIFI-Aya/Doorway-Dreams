@@ -6,8 +6,11 @@ import cient2 from '../assets/person-2.jpg';
 import sideImg from '../assets/sideImg.png';
 import sideImg1 from '../assets/sideImg1.png';
 import sideImg2 from '../assets/sideImg2.png';
+import { useSelector } from 'react-redux';
 
  const Hero = () => {
+    const user = useSelector((state) => state.user);
+
   return (
     <section className='max-padd-container mt-16 xl:mt-10'>
         <div className='flex flex-col xl:flex-row gap-16 '>
@@ -20,7 +23,11 @@ import sideImg2 from '../assets/sideImg2.png';
                     Dolor tempore alias minima consectetur provident.</p>
                 <div className='flex gap-3'>
                     <a href="#listing" className='btn-dark flexCenter rounded-full '>Explore Properties</a>
-                    <Link to={""} className='btn-secondary flexCenter rounded-full' ><span className='medium-20 pr-1 '>+</span>Add Property</Link>
+                    {user ? (
+                        <Link to={"/create-listing"} className='btn-secondary flexCenter rounded-full' ><span className='medium-20 pr-1 '>+</span>Add Property</Link> 
+                       ):(
+                        <Link to={"/login"} className='btn-secondary flexCenter rounded-full' ><span className='medium-20 pr-1 '>+</span>Add Property</Link> 
+                       ) }
                 </div>
                 <div className='flex relative '>
                     {/* Clients images */}

@@ -77,7 +77,7 @@ const Register = () => {
           </label>
           <button type="submit" className='btn-secondary rounded mt-2'> Register </button>
           <div className='text-gray-30'> Already have an account?
-            <Link to={'/login'} className='text-secondary cursor-pointer' > Login </Link> 
+            <Link to={'/login'} className='text-secondary cursor-pointer pl-1' > Login </Link> 
           </div>
         </form>
       </div>
