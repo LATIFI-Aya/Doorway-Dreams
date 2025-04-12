@@ -15,16 +15,42 @@ import Header from '../components/Header';
     const [amenities, setAmenities] = useState([]);
     const [photos, setPhotos] = useState([]);
 
+    //Adress / location
+    const [formLocation, setFormLocation] = useState({
+        streetAddress: "",
+        aptSuite: "",
+        city: "",
+        province: "",
+        country: "",
+    });
+
+    const handleChangeLocation = (e) => {
+        const { name, value } = e.target;
+        setFormLocation({...formLocation, [name]: value, });
+    };
+
     // counts
     const [guestCount, setGuestCount] = useState(1);
     const [bedroomCount, setBedroomCount] = useState(1);
     const [bedCount, setBedCount] = useState(1);
     const [bathroomCount, setBathroomCount] = useState(1);
+    
+
+    // Amenities Facilities
+    const handleSelectAmenities = (facility) => {
+        if (amenities.includes(facility)) {
+            setAmenities((prevAmenities) => prevAmenities.filter((option) => option !== facility));
+        } else {
+            setAmenities((prev) => [...prev, facility]);
+        }
+    };
+
+    console.log(amenities)
 
     const handleUploadPhotos = (e) => {
         const newPhotos = e.target.files;
         setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos])
-    }
+    };
 
     const handleDragPhoto = (result) => {
         if (!result.destination) return;
@@ -39,7 +65,21 @@ import Header from '../components/Header';
         setPhotos((prevPhotos) => prevPhotos.filter((_, index) => index !== indexToRemove));
     }
     
+    // FormDescripton
+    const [ formDescription, setFormDescription] = useState({
+        title: "",
+        description: "",
+        price: 0,
+    });
 
+    const handleChangeDescription = (e) => {
+        const { name, value } = e.target;
+        setFormDescription({...formDescription, [name]: value});
+    };
+
+    console.log(formDescription)
+
+// create Property function
     const handlePost = async (e) => {
         e.preventDefault();
     };
@@ -84,27 +124,27 @@ import Header from '../components/Header';
                         <div>
                             <div>
                                 <h5 className='h5'>Street Adress:</h5>
-                                <input type="text" name='streetAddress' placeholder='Street' required className='bg-white text-sm outline-none border-none mb-2 rounded' />
+                                <input onChange={handleChangeLocation}  value={formLocation.streetAddress} type="text" name='streetAddress' placeholder='Street' required className='bg-white text-sm outline-none border-none mb-2 rounded ring-1 ring-slate-900/5' />
                             </div>
                         </div>
-                        <div className='flex gap-6 '>
+                        <div className='flex gap-6'>
                             <div className='w-1/2'>
                                 <h5 className='h5'>Apartment, Suite (opt):</h5>
-                                <input type="text" name='aptSuite' placeholder='Apt, Suite (opt)' required className='bg-white text-sm outline-none border-none mb-2 rounded' />
+                                <input onChange={handleChangeLocation} value={formLocation.aptSuite} type="text" name='aptSuite' placeholder='Apt, Suite (opt)' required className='bg-white text-sm outline-none border-none mb-2 rounded ring-1 ring-slate-900/5' />
                             </div>
                             <div className='w-1/2'>
                                 <h5 className='h5'>City:</h5>
-                                <input type="text" name='city' placeholder='City' required className='bg-white text-sm outline-none border-none mb-2 rounded' />
+                                <input onChange={handleChangeLocation}  value={formLocation.city} type="text" name='city' placeholder='City' required className='bg-white text-sm outline-none border-none mb-2 rounded ring-1 ring-slate-900/5' />
                             </div>
                         </div>
                         <div className='flex gap-6 '>
                             <div className='w-1/2'>
                                 <h5 className='h5'>Province:</h5>
-                                <input type="text" name='province' placeholder='Province' required className='bg-white text-sm outline-none border-none mb-2 rounded' />
+                                <input onChange={handleChangeLocation}  value={formLocation.province} type="text" name='province' placeholder='Province' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded ring-1 ring-slate-900/5 ' />
                             </div>
                             <div className='w-1/2'>
                                 <h5 className='h5'>Country:</h5>
-                                <input type="text" name='country' placeholder='Country' required className='bg-white text-sm outline-none border-none mb-2 rounded' />
+                                <input onChange={handleChangeLocation} value={formLocation.country} type="text" name='country' placeholder='Country' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded ring-slate-900/5' />
                             </div>
                         </div>
                     </div>
@@ -150,7 +190,7 @@ import Header from '../components/Header';
                 <h4 className='h4 my-4'>Describe about the features of your location? </h4>
                 <ul className='flex items-center flex-wrap gap-3 mb-10'>
                     {facilities.map((card)=>(
-                        <li key={card.name} onClick={() => {}} className={`ring-1 ring-slate-900/5 flex items-center gap-3 bg-white p-4 rounded cursor-default`}>
+                        <li key={card.name} onClick={() => handleSelectAmenities(card.name)} className={`${amenities.includes(card.name) ? "ring-1 ring-slate-900/5" : "ring-1 ring-slate-900/50"} flex items-center gap-3 bg-white p-4 rounded cursor-default`}>
                             <div>{card.icon} </div>
                             <p>{card.name}</p>
                         </li>
@@ -208,17 +248,17 @@ import Header from '../components/Header';
                 <h4 className='h4 my-5'>How would your characterize the charm and exicitement of your property? </h4>
                 <div>
                     <h5 className='h5'>Title</h5>
-                    <input type="text" name="title" placeholder='Title' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded w-full'/>
+                    <input onChange={handleChangeDescription} value={formDescription.title} type="text" name="title" placeholder='Title' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded ring-1 ring-slate-900/5 w-full'/>
                     <h5 className='h5'>Description: </h5>
-                    <textarea name="description" rows={10} placeholder='Description' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded w-full resize-none'/>
-                    <input type="number" name='price' placeholder='100' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded '/>
+                    <textarea onChange={handleChangeDescription} value={formDescription.description} name="description" rows={10} placeholder='Description' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded ring-1 ring-slate-900/5 w-full resize-none'/>
+                    <input onChange={handleChangeDescription} value={formDescription.price} type="number" name='price' placeholder='100' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded ring-1 ring-slate-900/5'/>
                 </div>
             </div>
             <button type='submit' className='btn-secondary rounded-full'>Create Property</button>
         </form>
       </section>
     </>
-  )
-}
+  );
+};
 
 export default CreateListing;
