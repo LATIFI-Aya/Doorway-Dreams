@@ -12,6 +12,7 @@ import Header from '../components/Header';
  const CreateListing = () => {
     const [category, setCategory] = useState("");
     const [type, setType] = useState("");
+    const [amenities, setAmenities] = useState([]);
     const [photos, setPhotos] = useState([]);
 
     // counts
@@ -20,7 +21,7 @@ import Header from '../components/Header';
     const [bedCount, setBedCount] = useState(1);
     const [bathroomCount, setBathroomCount] = useState(1);
 
-    const handleUploadPhoto = (e) => {
+    const handleUploadPhotos = (e) => {
         const newPhotos = e.target.files;
         setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos])
     }
@@ -67,7 +68,7 @@ import Header from '../components/Header';
                         <h4 className='h4 my-4'>What is the type of your place?</h4>
                         <div className='flex flex-col gap-y-3 mb-6'>
                             {types.map((item) => (
-                                <div key={item.name} className={`${type === item.name ? "ring-1 ring-slate-900/50" : "ring-1 ring-slate-900/5"} flexbetween max-w-[777px] rounded-xl px-4 py-1`}>
+                                <div key={item.name} onClick={() => setType(item.name)} className={`${type === item.name ? "ring-1 ring-slate-900/50" : "ring-1 ring-slate-900/5"} flexbetween max-w-[777px] rounded-xl px-4 py-1`}>
                                     <div>
                                         <h5 className='h5' >{item.name}</h5>
                                         <p>{item.description}</p>
@@ -98,7 +99,7 @@ import Header from '../components/Header';
                         </div>
                         <div className='flex gap-6 '>
                             <div className='w-1/2'>
-                                <h5 className='h5'>Province</h5>
+                                <h5 className='h5'>Province:</h5>
                                 <input type="text" name='province' placeholder='Province' required className='bg-white text-sm outline-none border-none mb-2 rounded' />
                             </div>
                             <div className='w-1/2'>
@@ -162,7 +163,7 @@ import Header from '../components/Header';
                         {(provided) => ( <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 ld:grid-cols-5 xl:grid-cols-6 gap-4 p-4 bg-gray-50 roundded-lg shadow-lg ' {...provided.droppableProps} ref={provided.innerRef} >
                             {photos.length < 1 &&(
                                 <>
-                                  <input type='file' name='image' accept='image/' onChange={handleUploadPhoto} multiple id='imageUpload' className='hidden' /> 
+                                  <input type='file' name='image' accept='image/' onChange={handleUploadPhotos} multiple id='imageUpload' className='hidden' /> 
                                   <label htmlFor="imageUpload" className='group flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 hover:bg-gray-100 transition-colors cursor-pointer'> 
                                     <div className='h-52 w-full flexCenter'> 
                                         <IoIosImages className='text-6xl text-gray-400 group-hover:text-gray-600 transition-colors'/>
@@ -190,7 +191,7 @@ import Header from '../components/Header';
                                     </Draggable>
                                     );
                                 })}
-                                 <input type='file' id="imageUpload" accept="image/*" onChange={handleUploadPhoto} multiple className="hidden" />
+                                 <input type='file' id="imageUpload" accept="image/*" onChange={handleUploadPhotos} multiple className="hidden" />
                                  <label htmlFor="imageUpload" className='group flexCenter flex-col border-2 border-dashed border-gray-300 rounded-lg p-6 hover:bg-gray-100 transition-colors cursor-pointer'>
                                  <div className='h-52 w-full flexCenter'> 
                                         <IoIosImages className='text-6xl text-gray-400 group-hover:text-gray-600 transition-colors'/>
@@ -204,13 +205,13 @@ import Header from '../components/Header';
                          )} 
                     </Droppable>
                 </DragDropContext>
-                <h4>How would your characterize the charm and exicitement of your property? </h4>
+                <h4 className='h4 my-5'>How would your characterize the charm and exicitement of your property? </h4>
                 <div>
-                    <h5>Title</h5>
-                    <input type="text" name="title" placeholder='Title' required />
-                    <h5>Description: </h5>
-                    <textarea name="description" rows={10} placeholder='Description' required />
-                    <input type="number" name='price' placeholder='100' required />
+                    <h5 className='h5'>Title</h5>
+                    <input type="text" name="title" placeholder='Title' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded w-full'/>
+                    <h5 className='h5'>Description: </h5>
+                    <textarea name="description" rows={10} placeholder='Description' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded w-full resize-none'/>
+                    <input type="number" name='price' placeholder='100' required className='bg-white p-2 text-sm outline-none border-none mb-2 rounded '/>
                 </div>
             </div>
             <button type='submit' className='btn-secondary rounded-full'>Create Property</button>
