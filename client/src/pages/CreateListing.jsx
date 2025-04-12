@@ -22,16 +22,14 @@ import Header from '../components/Header';
 
     const handleUploadPhoto = (e) => {
         const newPhotos = e.target.files;
-        setPhotos((prevPhotos) => [
-            ...prevPhotos, ...newPhotos])
-        }
+        setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos])
+    }
 
     const handleDragPhoto = (result) => {
         if (!result.destination) return;
         const items = Array.from(photos);
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
-
         setPhotos(items);
     }
 
@@ -39,7 +37,7 @@ import Header from '../components/Header';
     const handleRemotePhoto = (indexToRemove) => {
         setPhotos((prevPhotos) => prevPhotos.filter((_, index) => index !== indexToRemove));
     }
-    const handleAddPhoto = (e) => {
+    
 
     const handlePost = async (e) => {
         e.preventDefault();
@@ -160,7 +158,45 @@ import Header from '../components/Header';
                 {/* upload image */}
                 <h4 className='h-4 m-6'>Include images showcasing your property?</h4>
                 <DragDropContext onDragEnd={handleDragPhoto}>
-                    <Droppable></Droppable>
+                    <Droppable droppableId="photos" direction="horizontal" >
+                        {(provided) => ( <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 ld:grid-cols-5 xl:grid-cols-6 gap-4 p-4 bg-gray-50 roundded-lg shadow-lg ' {...provided.droppableProps} ref={provided.innerRef} >
+                            {photos.length < 1 &&(
+                                <>
+                                  <input type='file' name='image' accept='image/' onChange={handleUploadPhoto} multiple id='imageUpload' className='hidden' /> 
+                                  <label htmlFor="imageUpload" className='group flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 hover:bg-gray-100 transition-colors cursor-pointer'> 
+                                    <div className='h-52 w-full flexCenter'> 
+                                        <IoIosImages className='text-6xl text-gray-400 group-hover:text-gray-600 transition-colors'/>
+                                        </div>
+                                        <p className='text-gray-500 group-hover:text-gray-700'>Upload from your devide</p>
+                                  </label> 
+                                </> 
+                            )} 
+                            {photos.length >= 1 && (
+                                <>
+                                   {photos.map((photo, index) => (
+                                    return (
+                                    <Draggable key={index} draggableId={index.toString()} index={index} >
+                                        {(provided) => (
+                                            <div ref={provided.innerRef} 
+                                            {...provided.dragHandleProps}
+                                            {...provided.dragHandleProps}
+                                            className='relative group'>
+                                                <img src={URL.createObjectURL(photo)} alt="property" className='aspect-square object-cover h-52 w-full rounded-lg shadow-md ' />
+                                                <button type='button' className='absolute top-2 right-2 bg-white p-1 rounded-full shadow-md hover:bg-gray-200 ' onClick={()=> handleRemotePhoto(index)} >
+                                                    <BiTrash className='text-red-500'/>
+                                                </button>
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                    );
+                                })}
+                                 <input type='file' id="imageUpload" accept="image/*" onChange={handleUploadPhotos} multiple className="hidden" />
+                                 
+                            </>
+                            )}
+                            </div>
+                         )} 
+                    </Droppable>
                 </DragDropContext>
             </div> 
         </form>
