@@ -173,7 +173,7 @@ import Header from '../components/Header';
                             )} 
                             {photos.length >= 1 && (
                                 <>
-                                   {photos.map((photo, index) => (
+                                   {photos.map((photo, index) => {
                                     return (
                                     <Draggable key={index} draggableId={index.toString()} index={index} >
                                         {(provided) => (
@@ -190,15 +190,30 @@ import Header from '../components/Header';
                                     </Draggable>
                                     );
                                 })}
-                                 <input type='file' id="imageUpload" accept="image/*" onChange={handleUploadPhotos} multiple className="hidden" />
-                                 
+                                 <input type='file' id="imageUpload" accept="image/*" onChange={handleUploadPhoto} multiple className="hidden" />
+                                 <label htmlFor="imageUpload" className='group flexCenter flex-col border-2 border-dashed border-gray-300 rounded-lg p-6 hover:bg-gray-100 transition-colors cursor-pointer'>
+                                 <div className='h-52 w-full flexCenter'> 
+                                        <IoIosImages className='text-6xl text-gray-400 group-hover:text-gray-600 transition-colors'/>
+                                        </div>
+                                        <p className='text-gray-500 group-hover:text-gray-700'>Upload more photos</p>
+                                 </label>
                             </>
                             )}
+                            {provided.placeholder}
                             </div>
                          )} 
                     </Droppable>
                 </DragDropContext>
-            </div> 
+                <h4>How would your characterize the charm and exicitement of your property? </h4>
+                <div>
+                    <h5>Title</h5>
+                    <input type="text" name="title" placeholder='Title' required />
+                    <h5>Description: </h5>
+                    <textarea name="description" rows={10} placeholder='Description' required />
+                    <input type="number" name='price' placeholder='100' required />
+                </div>
+            </div>
+            <button type='submit' className='btn-secondary rounded-full'>Create Property</button>
         </form>
       </section>
     </>
