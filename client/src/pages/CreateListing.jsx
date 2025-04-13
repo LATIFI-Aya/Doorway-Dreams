@@ -109,12 +109,12 @@ import Header from '../components/Header';
                 listingForm.append("listingPhotos", photo);
             });
             // Send POST raquest to server
-            const reponse = await fetch("http://localhost:4000/listing/create",{ 
+            const response = await fetch("http://localhost:4000/listing/create",{ 
                 method: "POST",
                 body: listingForm,
         });
 
-        if(reponse.ok){
+        if(response.ok){
             navigate("/");
         }
         } catch (err) {
@@ -260,7 +260,7 @@ import Header from '../components/Header';
                                             {...provided.dragHandleProps}
                                             className='relative group'>
                                                 <img src={URL.createObjectURL(photo)} alt="property" className='aspect-square object-cover h-52 w-full rounded-lg shadow-md ' />
-                                                <button type='button' className='absolute top-2 right-2 bg-white p-1 rounded-full shadow-md hover:bg-gray-200 ' onClick={()=> handleRemotePhoto(index)} >
+                                                <button type='button' className='absolute top-2 right-2 bg-white p-1 rounded-full shadow-md hover:bg-gray-200 ' onClick={()=> handleRemovePhoto(index)} >
                                                     <BiTrash className='text-red-500'/>
                                                 </button>
                                             </div>

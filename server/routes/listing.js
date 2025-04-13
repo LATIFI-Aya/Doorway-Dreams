@@ -22,7 +22,7 @@ router.post("/create", upload.array("listingPhotos"), async (req, res) => {
         // Take the information from the form
         const { creator, category, type, streetAddress, aptSuite, city, province, country, guestCount, bedroomCount, bedCount, bathroomCount, amenities, title, description, price, } = req.body;
         const listingPhotos = req.files;
-        if(!listingPhotos  || listingPhotos.length === 0){
+        if(!listingPhotos){ //  || listingPhotos.length === 0
             return res.status(400).send("No file uploaded");
         }
         const listingPhotoPaths = listingPhotos.map((file) => file.path);
@@ -41,19 +41,19 @@ router.post("/create", upload.array("listingPhotos"), async (req, res) => {
 
 // Get listing by category
 router.get("/", async (req, res) => {
-    const qCategory = req.query;
+    const qCategory = req.query.category;
     try {
         let listings;
         if(qCategory){
-            listings = await Listing.find({category: qCategory}).populate("creator")  // filter listings by category
+            listings = await Listing.find({category: qCategory}).populate("creator"); // filter listings by category
         } else {
-            listings = await Listing.find().populate("creator")
+            listings = await Listing.find().populate("creator");
         }
         res.status(200).json(listings);
     } catch (err) {
-        res.status(404).json({ message: "Fail to fetch listings", error: err.message})
+        res.status(404).json({ message: "Fail to fetch Listings", error: err.message});
         console.log(err);
     }
-})
+});
 
 export default router;

@@ -23,5 +23,5 @@ const listingSchema = new mongoose.Schema({
 {timestamps: true}
 );
 
-const Linsting = mongoose.model("Listing", listingSchema);
-export default Linsting;
+const Listing = mongoose.model("Listing", listingSchema);
+export default Listing;

@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '../components/Header'
 import Hero from '../components/Hero'
 import Feature from '../components/Feature'
-import Linstings from '../components/Linstings'
+import Listings from '../components/Listings'
 import Footer from '../components/Footer'
 import About from '../components/About'
 
@@ -12,7 +12,7 @@ import About from '../components/About'
         <Header/>
         <Hero />
         <Feature />
-        <Linstings />
+        <Listings />
         <About />
         <Footer/>
     </>
