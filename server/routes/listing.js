@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer";
-import { categories } from './../../client/src/assets/data';
+import Listing from "../models/Listing.js";
+
 
 const router = express.Router();
 // Configuring multer for file uploads
@@ -13,7 +14,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({storage})
+const upload = multer({storage});
 
 // Create listing route
 router.post("/create", upload.array("listingPhotos"), async (req, res) => {
@@ -21,8 +22,8 @@ router.post("/create", upload.array("listingPhotos"), async (req, res) => {
         // Take the information from the form
         const { creator, category, type, streetAddress, aptSuite, city, province, country, guestCount, bedroomCount, bedCount, bathroomCount, amenities, title, description, price, } = req.body;
         const listingPhotos = req.files;
-        if(!listingPhotos){
-            return res.status(400).send("No file uploaded")
+        if(!listingPhotos  || listingPhotos.length === 0){
+            return res.status(400).send("No file uploaded");
         }
         const listingPhotoPaths = listingPhotos.map((file) => file.path);
 
@@ -44,7 +45,7 @@ router.get("/", async (req, res) => {
     try {
         let listings;
         if(qCategory){
-            listings = await Listing.find({category: qCategory}).populate("creator")
+            listings = await Listing.find({category: qCategory}).populate("creator")  // filter listings by category
         } else {
             listings = await Listing.find().populate("creator")
         }
