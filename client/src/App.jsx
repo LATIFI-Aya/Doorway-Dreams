@@ -3,6 +3,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import CreateListing from './pages/CreateListing';
+import ListingDetails from './pages/ListingDetails';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
           <Route path="/login" element={<Login/>} />
           <Route path="/" element={<Home/>} />
           <Route path="/create-listing" element={<CreateListing />} />
+          <Route path="/listing/:listingId" element={<ListingDetails />} />
         </Routes>
       </div>
     </BrowserRouter>

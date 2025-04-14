@@ -118,7 +118,7 @@ import Header from '../components/Header';
             navigate("/");
         }
         } catch (err) {
-            console.log("Publish Listing failed, err.message")
+            console.log("Publish Listing failed", err.message)
         }
     };
 

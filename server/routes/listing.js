@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import Listing from "../models/Listing.js";
+import Listing from '../models/Listing.js';
 
 
 const router = express.Router();
@@ -53,6 +53,17 @@ router.get("/", async (req, res) => {
     } catch (err) {
         res.status(404).json({ message: "Fail to fetch Listings", error: err.message});
         console.log(err);
+    }
+});
+
+// Listing Details 
+router.get("/:listingId", async (req, res) => {
+    try {
+        const { listingId} = req.params;
+        const listing = await Listing.findById(listingId).populate("creator"); // find listing by id and populate creator
+        res.status(202).json(listing);
+    } catch (err) {
+        res.status(404).json({ message: "Listing cannot found", error: err.message});
     }
 });
 

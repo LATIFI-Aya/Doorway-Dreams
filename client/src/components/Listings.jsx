@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { categories } from '../assets/data';
 import { useDispatch, useSelector } from 'react-redux';
 import { setListings } from '../redux/state';
-import ListingCard from './ListingCard';
-import { Loader } from './Loader';
+import  Loader  from '../components/Loader';
+import ListingCard from '../components/ListingCard';
 
 const Listings = () => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const Listings = () => {
     try {
       const response = await fetch( 
       selectedCategory !== "All" ?
-      `http://localhost:4000//listing?category=${selectedCategory}` : 
+      `http://localhost:4000/listing?category=${selectedCategory}` : 
        "http://localhost:4000/listing",{ 
         method: "GET",
       }
@@ -29,11 +29,10 @@ const Listings = () => {
   }
   useEffect(() => {
     getQueryListings();
-  },
-  [selectedCategory]);
+  }, [selectedCategory]);
   
   return (
-    <section id='listing' className='max-padd-container py-16 xl:py-32'>
+    <section id='listing' className='max-padd-container py-12 '>
       {/* Title */}
       <div className='text-center pb-16'>
         <h6 className='capitalize'> From concept to reality </h6>
@@ -57,7 +56,7 @@ const Listings = () => {
         {listings.map(({_id, creator, listingPhotoPaths, city, province, country, category, type, price, title, description, }) => (
           <ListingCard
           key={_id}
-          ListingId={_id}
+          listingId={_id}
           creator={creator}
            listingPhotoPaths={listingPhotoPaths}
            city={city}
