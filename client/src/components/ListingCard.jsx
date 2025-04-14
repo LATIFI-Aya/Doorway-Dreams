@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setWishList } from '../redux/state';
+import { GoHeartFill, GoHeart } from 'react-icons/go';
 
- const ListingCard = ({ listingId, creator, listingPhotoPaths, city, province, country, category, type, price, title, description, booking, startDate, endDate, totalPrice}) => {
+ const ListingCard = ({ listingId, creator, listingPhotoPaths, city, province, country, category, type, price, title, description, startDate, endDate, totalPrice, booking, }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -16,6 +18,27 @@ import { useDispatch } from 'react-redux';
     const goToNextSlide = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % listingPhotoPaths.length);
     };
+
+    //Add to wishList
+    const user = useSelector((state)=> state.user)
+    const wishList = user?.wishList || [];
+
+    const isLiked = wishList?.find((item) => item?._id === listingId);
+
+    const patchWishList = async () => {
+        if(user?._id !== creator._id) {
+            const response = await fetch(`http://localhost:4000/users/${user?._id}/${listingId}`, { 
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }); 
+            const data = await response.json();
+            dispatch(setWishList(data.wishList));
+        } else {
+            return
+        }
+    }
 
   return (
     <div onClick={()=>navigate(`/listing/${listingId}`)} className='grid grid-cols-1 xl:grid-cols-2 gap-6 place-items-center ring-1 ring-slate-900/5 bg-white cursor-pointer p-2.5 rounded-[2.5rem] relative group'>
@@ -43,6 +66,16 @@ import { useDispatch } from 'react-redux';
                     </div>
                 ))}
             </div>
+           { /* Heart icon */ }
+           <button onClick={(e)=>{
+            e.stopPropagation();
+            patchWishList();
+           }} disabled={!user} className='absolute top-3 right-5 border border-white h-7 w-7 rounded-full flexCenter ' >
+            {isLiked ? ( 
+                <GoHeartFill className='text-white text-lg'/>
+            ):(
+                <GoHeart className='text-lg text-white ' />
+            )} </button>
         </div>
         {/* Title & Description info */}
         <div className='max-sm:px-2 '>
