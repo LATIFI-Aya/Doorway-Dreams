@@ -4,7 +4,7 @@ import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
- const ListingCard = ({ listingId, creator, listingPhotoPaths, city, province, country, category, type, price, title, description, }) => {
+ const ListingCard = ({ listingId, creator, listingPhotoPaths, city, province, country, category, type, price, title, description, booking, startDate, endDate, totalPrice}) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
     };
 
   return (
-    <div onClick={()=>navigate(`/listing/${listingId}`)} className='grid grid-cols-1 xl:grid-cols-2 gap-6 palce-items-center ring-1 ring-slate-900/5 bg-white cursor-pointer p-2.5 rounded-[2.5rem] relative group'>
+    <div onClick={()=>navigate(`/listing/${listingId}`)} className='grid grid-cols-1 xl:grid-cols-2 gap-6 place-items-center ring-1 ring-slate-900/5 bg-white cursor-pointer p-2.5 rounded-[2.5rem] relative group'>
         {/* Image */}
         <div className='overflow-hidden relative'>
             <div className='flex' style={{transform: `translateX(-${currentIndex * 100}%)`}}>
@@ -47,16 +47,27 @@ import { useDispatch } from 'react-redux';
         {/* Title & Description info */}
         <div className='max-sm:px-2 '>
             <h4 className='h4'>{title} </h4>
-            <div className='bold-16 pd-2'>{category}</div>
-            <h5 className='flex items-center gap-x-2 capitalize medium-15'> <HiOutlineLocationMarker /> 
-            {city}, {province}, {country}
+            <div className='bold-16 pb-2'>{category}</div>
+            <h5 className='flex items-center gap-x-2 capitalize medium-15'> 
+                <HiOutlineLocationMarker /> 
+                {city}, {province}, {country}
             </h5>
             <div className='mt-2'>
-                <div>
-                    <span className='text-secondary bold-22'>MAD{price}</span>
-                    <span className='medium-14 '>/ night</span>
-                </div>
-                <div className='medium-15 captalize py-1'>{type} </div>
+                {!booking ? (
+                    <>
+                        <div>
+                            <span className='text-secondary bold-22'>MAD{price}</span>
+                            <span className='medium-14 '>/ night</span>
+                        </div>
+                        <div className='medium-15 capitalize py-1'>{type} </div>
+                    </>
+                ) : (
+                    <div className='pb-3'>
+                        <p className='py-1'>{startDate} - {endDate} </p>
+                        <p><span className='text-secondary bold-22'>MAD {totalPrice} </span></p>
+                    </div>
+                )}
+                
             </div>
             <p className='line-clamp-4'>{description} </p>
         </div>

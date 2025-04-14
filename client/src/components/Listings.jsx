@@ -53,7 +53,7 @@ const Listings = () => {
      { /*Properties / Listings */}
      {loading ? (<Loader />) : (
       <div className='grid grid-cols-cols-1 md:grid-cols-2 gap-6'>
-        {listings.map(({_id, creator, listingPhotoPaths, city, province, country, category, type, price, title, description, }) => (
+        {listings.map(({_id, creator, listingPhotoPaths, city, province, country, category, type, price, title, description, booking=false }) => (
           <ListingCard
           key={_id}
           listingId={_id}
@@ -67,6 +67,7 @@ const Listings = () => {
             price={price}
             title={title}
             description={description}
+            booking={booking}
           /> ) 
         )}
       </div>
