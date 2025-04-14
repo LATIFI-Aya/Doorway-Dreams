@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from "../components/Header";
 import Loader from '../components/Loader';
 import { HiOutlineLocationMarker } from 'react-icons/hi'
@@ -9,11 +9,14 @@ import { facilities } from '../assets/data';
 import { DateRange } from 'react-date-range';
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import { useSelector } from 'react-redux';
+import Footer from '../components/Footer';
 
  const ListingDetails = () => { 
     const[loading, setLoading] = useState(true);
     const {listingId} = useParams();
     const [listing, setListing] = useState(null);
+    const navigate = useNavigate();
 
     const getListingDetails = async () => {
         try {
@@ -45,9 +48,39 @@ import "react-date-range/dist/theme/default.css";
 
     const start = new Date(dateRange[0].startDate)
     const end = new Date(dateRange[0].endDate)
-    const dayCount = Math.round(end - start )/(1000 * 60 * 60 * 24); //calculate the diff in day units
+    const dayCount = Math.round(end - start ) / (1000 * 60 * 60 * 24); //calculate the diff in day units
 
+    const customerId = useSelector((state) => state?.user?._id);
     
+    const isOwner = listing?.creator?._id === customerId; // Check if the current user is the property owner
+
+    const handleSubmit = async () => {
+        try {
+            const bookingForm = {
+                customerId,
+                listingId,
+                hostId: listing.creator._id,
+                startDate: dateRange[0].startDate.toDateString(),
+                endDate: dateRange[0].endDate.toDateString(),
+                totalPrice: listing.price * dayCount,
+                title: listing.title,
+                description: listing.description,
+            };
+            const response = await fetch("http://localhost:4000/bookings/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(bookingForm)
+            });
+
+            if(response.ok){
+                navigate(`/${customerId}/trips`);
+            }
+        } catch (err) {
+            console.log("Submit Booking Failed", err.message);
+        }
+    }
 
     useEffect(()=>{
         getListingDetails();
@@ -135,12 +168,23 @@ import "react-date-range/dist/theme/default.css";
                     </div>
                 </div>
                 {/*Book Button*/}
-                <button type="submit" className='btn-secondary rounded-full flexCenter gap-x-2 capitalize'>Book the visit </button>
+                <button type="submit" onClick={handleSubmit} className='btn-secondary rounded-full flexCenter gap-x-2 capitalize' disabled={isOwner} >{isOwner ? "You can book your own property": ""} </button>
             </div>
         </div>
-      </section> 
+       {/* Right {image gallery} */ }
+       <div className='flex-1'>
+        <div className='flex flex-wrap'>
+            {listing.listingPhotoPaths?.map((item, index) => (
+                <div key={index} className={`${index === 0 ? "w-full":"w-1/2"} p-2`} >
+                    <img src={`http://localhost:4000/${item.replace("public", "")}`} alt="ListingImages" className={`max-w-full ${index === 0 ? "object-contain rounded-3xl" : "rounded-2xl"}`} />
+                </div>
+            ))}
+        </div>
+       </div>
+      </section>
+      <Footer /> 
     </>
-  )
-}
+  );
+};
 
 export default ListingDetails;

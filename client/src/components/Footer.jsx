@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <div className='max-padd-container '>
         <div className='max-padd-container bg-black text-white py-10 rounded-3xl'>
-            <div className='container mx-auto grid grid-cols-1 md:grid-4 gap-8'>
+            <div className='container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8'>
                {/* logo */}
                <Link to={'/'}  >
                    <div className="bold-24 mb-4"> Doorway <span className='text-secondary'>Dreams</span></div>

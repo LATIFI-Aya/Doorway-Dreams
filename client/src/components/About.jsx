@@ -12,7 +12,7 @@ const About = () => {
             <div className='flex-1 flex flex-col justify-center'>
                 {/* title */}
                 <div className='pb-2'>
-                    <h6 className='capitalize'> Few Steps to your naw home </h6>
+                    <h6 className='capitalize'> Few Steps to your new home </h6>
                     <h2 className='h2 capitalize'>This is how easy it can be </h2>
                 </div>
                 <ul>

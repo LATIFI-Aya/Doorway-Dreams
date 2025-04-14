@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import "dotenv/config";
 import authRoutes from "./routes/auth.js";
 import listingRoutes from "./routes/listing.js";
+import bookingRoutes from "./routes/booking.js";
+import userRoutes from "./routes/user.js";
 
 const app = express();
 app.use(express.json());
@@ -13,6 +15,8 @@ app.use(express.static("public"));
 //Multer
 app.use("/auth", authRoutes)
 app.use("/listing", listingRoutes);
+app.use("/bookings", bookingRoutes);
+app.use("/users", userRoutes);
 
 
 // MongoDB connection
