@@ -5,6 +5,10 @@ import Home from './pages/Home';
 import CreateListing from './pages/CreateListing';
 import ListingDetails from './pages/ListingDetails';
 import TripList from './pages/TripList';
+import PropertyList from './pages/PropertyList';
+import ReservationList from './pages/ReservationList';
+import WishList from './pages/WishList';
+import Search from './pages/Search';
 
 export default function App() {
   return (
@@ -16,7 +20,12 @@ export default function App() {
           <Route path="/" element={<Home/>} />
           <Route path="/create-listing" element={<CreateListing />} />
           <Route path="/listing/:listingId" element={<ListingDetails />} />
+          <Route path="/listing/search/:search" element={<Search />} />
           <Route path="/:userId/trips" element={<TripList />} />
+          <Route path="/:userId/wishlist" element={<WishList />} />
+          <Route path="/:userId/listing" element={<PropertyList />} />
+          <Route path="/:userId/reservations" element={<ReservationList />} />
+          
         </Routes>
       </div>
     </BrowserRouter>

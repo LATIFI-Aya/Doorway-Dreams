@@ -55,11 +55,11 @@ const Listings = () => {
       <div className='grid grid-cols-cols-1 md:grid-cols-2 gap-6'>
         {listings.map(({_id, creator, listingPhotoPaths, city, province, country, category, type, price, title, description, booking=false }) => (
           <ListingCard
-          key={_id}
-          listingId={_id}
-          creator={creator}
-           listingPhotoPaths={listingPhotoPaths}
-           city={city}
+            key={_id}
+            listingId={_id}
+            creator={creator}
+            listingPhotoPaths={listingPhotoPaths}
+            city={city}
             province={province}
             country={country}
             category={category}

@@ -59,11 +59,33 @@ router.get("/", async (req, res) => {
 // Listing Details 
 router.get("/:listingId", async (req, res) => {
     try {
-        const { listingId} = req.params;
+        const { listingId } = req.params;
         const listing = await Listing.findById(listingId).populate("creator"); // find listing by id and populate creator
         res.status(202).json(listing);
     } catch (err) {
         res.status(404).json({ message: "Listing cannot found", error: err.message});
+    }
+});
+
+
+// Get listing by Search
+router.get("/search/:search", async (req, res) => {
+    const {search} = req.params;
+    try {
+        let listings = [];
+        if(search == "All"){
+            listings = await Listing.find().populate("creator"); // filter listings by category
+        } else {
+            listings = await Listing.find({ 
+                $or:[ 
+                    {category: {$regex: search, $options: "i" }},
+                    {title: {$regex: search, $options: "i" }},
+                ]}).populate("creator");
+        }
+        res.status(200).json(listings);
+    } catch (err) {
+        res.status(404).json({ message: "Fail to fetch Listings", error: err.message});
+        console.log(err);
     }
 });
 

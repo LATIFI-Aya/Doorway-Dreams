@@ -19,7 +19,7 @@ router.get("/:userId/trips", async (req, res) => {
 });
 
 // Add Listing to Wishlist
-router.patch("/:usesrId/:listingId", async (req, res) => {
+router.patch("/:userId/:listingId", async (req, res) => {
     try {
         const { userId, listingId } = req.params;
         const user = await User.findById(userId);
@@ -30,16 +30,42 @@ router.patch("/:usesrId/:listingId", async (req, res) => {
         if(favoriteListing) {
             user.wishList = user.wishList.filter((item) => item._id.toString() !== listingId);
             await user.save();
-            res.status(200).json({ message: "Listing removed from WishList", wishList:user.wishList });
+            res.status(200).json({ message: "Listing removed from WishList", wishList: user.wishList });
         } else {
             user.wishList.push(listing);
             await user.save();
-            res.status(200).json({ message: "Listing is added to WishList", wishList:user.wishList });
+            res.status(200).json({ message: "Listing is added to WishList", wishList: user.wishList });
         }
     } catch (err) {
         console.log(err);
         res.status(404).json({  error: err.message });
     }
-})
+});
+
+// Get User Listing
+router.get("/:userId/listing", async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const listing = await Listing.find({ creator: userId }).populate("creator");
+        res.status(202).json(listing);
+    } catch (err) {
+        console.log(err);
+        res.status(404).json({ message: "Can not find listing!", error: err.message });
+    }
+});
+
+// Get Reservations List
+router.get("/:userId/reservations", async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const reservations = await Booking.find({ hostId: userId }).populate("customerId hostId listingId");
+        res.status(202).json(reservations);
+    } catch (err) {
+        console.log(err);
+        res.status(404).json({ message: "Can not find reservations!", error: err.message });
+    }
+});
+
+
 
 export default router;

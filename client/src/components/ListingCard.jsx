@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setWishList } from '../redux/state';
 import { GoHeartFill, GoHeart } from 'react-icons/go';
 
+
  const ListingCard = ({ listingId, creator, listingPhotoPaths, city, province, country, category, type, price, title, description, startDate, endDate, totalPrice, booking, }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const navigate = useNavigate();
@@ -27,27 +28,28 @@ import { GoHeartFill, GoHeart } from 'react-icons/go';
 
     const patchWishList = async () => {
         if(user?._id !== creator._id) {
-            const response = await fetch(`http://localhost:4000/users/${user?._id}/${listingId}`, { 
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }); 
+            const response = await fetch(`http://localhost:4000/users/${user?._id}/${listingId}`, 
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }); 
             const data = await response.json();
             dispatch(setWishList(data.wishList));
         } else {
-            return
+            return;
         }
-    }
+    };
 
   return (
-    <div onClick={()=>navigate(`/listing/${listingId}`)} className='grid grid-cols-1 xl:grid-cols-2 gap-6 place-items-center ring-1 ring-slate-900/5 bg-white cursor-pointer p-2.5 rounded-[2.5rem] relative group'>
+    <div onClick={()=>navigate(`/listing/${listingId}`)} className='grid grid-cols-1 xl:grid-cols-2 gap-6 place-items-center ring-1 ring-slate-900/5 bg-white cursor-default p-2.5 rounded-[2.5rem] relative group'>
         {/* Image */}
         <div className='overflow-hidden relative'>
             <div className='flex' style={{transform: `translateX(-${currentIndex * 100}%)`}}>
                 {listingPhotoPaths?.map((photo, i)=> (
                     <div key={i} className='relative flex-none w-full h-[266px] items-center'>
-                        <img src={`http://localhost:4000/${photo.replace("public","")}`} alt={`photo ${i + 1}`} className='h-full w-full rounded-[2rem]'/>
+                        <img src={`http://localhost:4000/${photo.replace("public", "")}`} alt={`photo ${i + 1}`} className='h-full w-full rounded-[2rem]'/>
                         {/* Images slide Arrows */}
                         <div className='opacity-0 group-hover:opacity-100 transition-opacity duration-1000'>
                             <div>

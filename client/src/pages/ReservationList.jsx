@@ -1,39 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setTripList } from '../redux/state';
+import { setReservationList } from '../redux/state';
 import Loader from '../components/Loader';
 import Header from '../components/Header';
 import ListingCard from '../components/ListingCard';
 
- const TripList = () => {
+ const ReservationList = () => {
     const [loading, setLoading] = useState(true);
     const userId = useSelector((state) => state.user._id);
-    const tripList = useSelector((state) => state.user.tripList);
+    const reservationList = useSelector((state) => state.user.reservationList);
     const dispatch = useDispatch();
 
-    const getTripList = async () => {
+    const getReservationList = async () => {
         try {
-            const response = await fetch(`http://localhost:4000/users/${userId}/trips`, {
+            const response = await fetch(`http://localhost:4000/users/${userId}/reservations`, {
                 method: "GET",
             });
             const data = await response.json();
-            dispatch(setTripList(data));
+            dispatch(setReservationList(data));
             setLoading(false);
         } catch (err) {
-            console.log("Fetch Trip List Failed!", err.message);
+            console.log("Fetch Reservation List Failed!", err.message);
         }
     };
     useEffect(() => {
-        getTripList();  
+      getReservationList();  
     }, [])
 
-    console.log(tripList);
+    console.log(reservationList);
   return loading ? ( <Loader /> ) : (
     <>
        <Header />
        <section className='max-padd-container pt-10'>
-        <h3 className='h3'>Your Trip List</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{tripList.map(({
+        <h3 className='h3'>Your Reservation List</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{reservationList.map(({
             listingId,
             hostId,
             startDate,
@@ -64,5 +64,4 @@ import ListingCard from '../components/ListingCard';
     </>
   )
 }
-
-export default TripList;
+export default ReservationList;
